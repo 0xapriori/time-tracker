@@ -40,10 +40,8 @@ const TimeAnalyzer = () => {
 
   const processTimeData = () => {
     try {
-      // Split input into lines and filter out empty lines
       const lines = inputText.split('\n').filter(line => line.trim());
       
-      // Parse each line for time entries
       const entries = lines
         .map(parseTimeEntry)
         .filter(entry => entry !== null);
@@ -54,15 +52,12 @@ const TimeAnalyzer = () => {
         return;
       }
 
-      // Categorize and group entries
       const categorizedEntries = entries.map(entry => ({
         ...entry,
         category: categorizeEntry(entry.text)
       }));
 
       const groupedData = _.groupBy(categorizedEntries, 'category');
-      
-      // Calculate totals and percentages
       const totalMinutes = _.sumBy(entries, 'time');
       
       const chartData = Object.entries(groupedData).map(([category, items]) => {
@@ -164,4 +159,21 @@ const TimeAnalyzer = () => {
             </ResponsiveContainer>
           </div>
           
-          <div className=
+          <div className="mt-8">
+            <h3 className="text-xl font-bold mb-4">Summary</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {timeData.map((item, index) => (
+                <div key={index} className="p-4 border rounded">
+                  <h4 className="font-medium">{item.name}</h4>
+                  <p>{item.hours} hours ({item.value}%)</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default TimeAnalyzer;
